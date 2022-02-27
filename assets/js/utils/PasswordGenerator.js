@@ -1,6 +1,7 @@
 import config from "./config.js";
 import copySuccessAlertBox from "../elements/copyAlertSuccessBox.js";
 import { getRandomCharacter, shuffle } from "./functions.js";
+import $ from "../elements/dollar-sign.js";
 class PasswordGenerator {
     _config;
     outputElement;
@@ -59,4 +60,4 @@ class PasswordGenerator {
         }
     };
 }
-export const { passwordConfig, isValidLength, setLength, setCharacterOption, output, copyToClipboard } = new PasswordGenerator(config, document.querySelector("output"));
+export const { passwordConfig, isValidLength, setLength, setCharacterOption, output, copyToClipboard } = new PasswordGenerator(config, $("output"));

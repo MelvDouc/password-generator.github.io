@@ -1,7 +1,8 @@
 import { passwordConfig, isValidLength, setLength, setCharacterOption } from "../utils/PasswordGenerator.js";
+import $ from "./dollar-sign.js";
 const handleLengthChange = (counter) => {
-    return (e) => {
-        const value = +e.target.value;
+    return ({ target }) => {
+        const value = +target.value;
         if (!isValidLength(value))
             return;
         counter.value = String(value);
@@ -22,41 +23,42 @@ const handleCounterKeyDown = (slider) => {
         setLength(newValue);
     };
 };
-export function setSliderAttributes() {
-    const container = document.getElementById("length-slider-container");
+export const setSliderAttributes = () => {
+    const container = $("#length-slider-container");
     const commonConfigs = {
         min: passwordConfig.length.MIN,
         max: passwordConfig.length.MAX,
         value: passwordConfig.length.value
     };
-    const slider = container.querySelector("input[type='range']");
-    const counter = container.querySelector("input[type='number']");
+    const slider = $("input[type='range']", container);
+    const counter = $("input[type='number']", container);
+    ;
     for (const key in commonConfigs) {
         slider.setAttribute(key, commonConfigs[key]);
         counter.setAttribute(key, commonConfigs[key]);
     }
     slider.addEventListener("change", handleLengthChange(counter));
     counter.addEventListener("keydown", handleCounterKeyDown(slider));
-}
-export function createCheckboxes() {
-    const container = document.getElementById("checkboxes-container");
-    const template = document.getElementById("checkbox-template");
+};
+export const createCheckboxes = () => {
+    const container = $("#checkboxes-container");
     for (const key in passwordConfig.characters) {
-        const clone = template.content.cloneNode(true);
-        const label = clone.querySelector("label");
-        label.innerText = key[0].toUpperCase() + key.slice(1);
-        label.htmlFor = key;
-        const input = clone.querySelector("input");
-        input.id = key;
-        input.checked = passwordConfig.characters[key].checked;
-        input.addEventListener("change", () => {
-            setCharacterOption(key, input.checked);
-        });
-        container.append(clone);
+        const { checked } = passwordConfig.characters[key];
+        container.innerHTML += `
+      <div class="pwd-checkbox">
+        <input type="checkbox" id="${key}" ${checked ? "checked" : ""} />
+        <label for="${key}">${key[0].toUpperCase() + key.slice(1)}</label>
+      </div>
+    `;
     }
-}
+    container.addEventListener("change", ({ target }) => {
+        if (!(target instanceof HTMLInputElement))
+            return;
+        setCharacterOption(target.id, target.checked);
+    });
+};
 export const getButton = (selector) => {
-    const button = document.querySelector(selector);
+    const button = $(selector);
     return {
         handleClick: (listener) => {
             button.addEventListener("click", listener);

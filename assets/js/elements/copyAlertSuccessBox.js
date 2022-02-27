@@ -1,5 +1,6 @@
+import $ from "./dollar-sign.js";
 const copySuccessAlertBox = (() => {
-    const element = document.getElementById("copy-success-alert");
+    const element = $("#copy-success-alert");
     const animationClassName = "on";
     element.addEventListener("animationend", () => {
         element.classList.remove(animationClassName);
