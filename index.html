@@ -22,7 +22,10 @@
     <section class="bottom">
       <div class="form">
         <article class="inputs">
-          <div id="length-slider-container"></div>
+          <div id="length-slider-container">
+            <input type="range" />
+            <input type="number" />
+          </div>
           <div id="checkboxes-container"></div>
         </article>
         <article class="controls">
@@ -33,6 +36,12 @@
     </section>
   </div>
 
+  <template id="checkbox-template">
+    <div class="pwd-checkbox">
+      <input type="checkbox" />
+      <label></label>
+    </div>
+  </template>
 </body>
 
 </html>
