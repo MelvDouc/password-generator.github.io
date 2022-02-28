@@ -1,4 +1,4 @@
-import { passwordConfig, isValidLength, setLength, setCharacterOption } from "../utils/PasswordGenerator.js";
+import { passwordConfig, isValidLength, setLength, setCharacterOption, output, copyToClipboard } from "../utils/PasswordGenerator.js";
 import $ from "./dollar-sign.js";
 const handleLengthChange = (counter) => {
     return ({ target }) => {
@@ -32,13 +32,14 @@ export const setSliderAttributes = () => {
     };
     const slider = $("input[type='range']", container);
     const counter = $("input[type='number']", container);
-    ;
-    for (const key in commonConfigs) {
-        slider.setAttribute(key, commonConfigs[key]);
-        counter.setAttribute(key, commonConfigs[key]);
-    }
-    slider.addEventListener("change", handleLengthChange(counter));
-    counter.addEventListener("keydown", handleCounterKeyDown(slider));
+    Object.assign(slider, {
+        ...commonConfigs,
+        onchange: handleLengthChange(counter)
+    });
+    Object.assign(counter, {
+        ...commonConfigs,
+        onkeydown: handleCounterKeyDown(slider)
+    });
 };
 export const createCheckboxes = () => {
     const container = $("#checkboxes-container");
@@ -57,11 +58,7 @@ export const createCheckboxes = () => {
         setCharacterOption(target.id, target.checked);
     });
 };
-export const getButton = (selector) => {
-    const button = $(selector);
-    return {
-        handleClick: (listener) => {
-            button.addEventListener("click", listener);
-        }
-    };
+export const handleButtonsClick = () => {
+    $("#new-password-btn").addEventListener("click", output);
+    $("#copy-password-btn").addEventListener("click", copyToClipboard);
 };
